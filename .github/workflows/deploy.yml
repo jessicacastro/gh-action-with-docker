@@ -21,6 +21,12 @@ jobs:
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
+    services:
+      mongodb-test-service:
+        image: mongo
+        env:
+          MONGO_INITDB_ROOT_USERNAME: ${{ env.MONGODB_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ env.MONGODB_PASSWORD }}
     steps:
       - name: Get Code
         uses: actions/checkout@v3
