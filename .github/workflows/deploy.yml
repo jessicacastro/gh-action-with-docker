@@ -10,7 +10,11 @@ env:
 jobs:
   test:
     environment: docker
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # the machine will host the docker container (image)
+    container:
+      image: node:16
+      # env:
+    # container: node:16
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_URL }}
