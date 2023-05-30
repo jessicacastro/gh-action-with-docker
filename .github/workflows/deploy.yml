@@ -11,19 +11,22 @@ jobs:
   test:
     environment: docker
     runs-on: ubuntu-latest # the machine will host the docker container (image)
-    container:
-      image: node:16
-      # env:
+    # container:
+    #   image: node:16
+    # env:
     # container: node:16
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
-      MONGODB_CLUSTER_ADDRESS: mongodb-test-service
+      # MONGODB_CLUSTER_ADDRESS: mongodb-test-service
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
     services:
       mongodb-test-service:
         image: mongo
+        ports:
+          - 27017:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: ${{ env.MONGODB_USERNAME }}
           MONGO_INITDB_ROOT_PASSWORD: ${{ env.MONGODB_PASSWORD }}
@@ -38,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run server
-        run: npm start & npx wait-on http://127.0.0.1:$PORT # requires MongoDB Atlas to accept requests from anywhere!
+        run: npm start & npx wait-on http://127.0.0.1:$PORT
       - name: Run tests
         run: npm test
       - name: Output information
