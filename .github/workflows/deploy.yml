@@ -6,14 +6,14 @@ on:
       - dev
 env:
   CACHE_KEY: node-deps
-  MONGODB_DB_NAME: gha-demo
+  MONGODB_DB_NAME: gha-demo-container
 jobs:
   test:
-    environment: testing
+    environment: docker
     runs-on: ubuntu-latest
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-      MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
+      MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_URL }}
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
@@ -41,7 +41,7 @@ jobs:
       - name: Output information
         env:
           PORT: 3000
-        run: |        
+        run: |
           echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"
           echo "MONGODB_USERNAME: $MONGODB_USERNAME"
           echo "${{ env.PORT }}"
